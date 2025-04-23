@@ -19,6 +19,11 @@ const geistMono = Inter({
 export const metadata: Metadata = {
   title: "Contrata Musico | encontre o músico ideal para sua banda",
   description: "Contrata Musico é uma plataforma que conecta músicos e bandas, facilitando a busca pelo músico ideal para sua banda.",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({
