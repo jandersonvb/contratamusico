@@ -24,7 +24,7 @@ export default function Home() {
         onClick={() =>
           window.open("https://wa.me/5535998102070", "_blank", "noopener,noreferrer")
         }
-        className="bg-primary hover:bg-primary/90 text-white"
+        className="bg-primary hover:bg-primary/80 text-white"
       >
         Fale conosco no WhatsApp
       </Button>
