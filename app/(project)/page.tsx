@@ -1,33 +1,162 @@
 "use client";
+import { UserPlus, Search, CheckCircle } from "lucide-react";
 
-import { Button } from "@/app/components/ui/button";
-import Image from "next/image";
+import { Button } from "@/app/_components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/app/_components/ui/dropdown-menu";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-6">
-      <Image
-        src="/logo.png"
-        alt="Logo Contrata Músico"
-        width={128}
-        height={128}
-        className="w-32 h-32"
-      />
+    <main className="bg-background text-foreground min-h-screen">
+      {/* Header */}
+      <header className="border-border bg-background/80 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 flex w-full items-center justify-between border-b px-4 py-4 backdrop-blur md:px-6">
+        <div className="flex items-center gap-1 text-lg font-bold text-white md:text-xl">
+          <img
+            src="/logo.png"
+            alt="ContrataMúsico Logo"
+            className="h-6 md:h-8"
+          />
+          <span className="text-white">ContrataMúsico</span>
+        </div>
+        <nav className="hidden items-center justify-center gap-4 text-sm font-medium md:flex">
+          <a href="#" className="hover:underline">
+            Buscar músicos
+          </a>
+          <a href="#" className="hover:underline">
+            Sou músico
+          </a>
+          <a
+            href="/login"
+            className="bg-primary hover:bg-primary/80 text-primary-foreground rounded-lg px-4 py-2 text-center font-medium transition"
+          >
+            Entrar
+          </a>
+        </nav>
+        <div className="md:hidden">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="p-0">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16m-7 6h7"
+                  />
+                </svg>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuItem>
+                <a href="#" className="w-full text-left">
+                  Buscar músicos
+                </a>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <a href="#" className="w-full text-left">
+                  Sou músico
+                </a>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <a href="/login" className="w-full text-left">
+                  Entrar
+                </a>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </header>
 
-      <h1 className="text-3xl font-bold">Contrata Músico</h1>
-      <p className="text-center text-sm text-gray-500">
-        Conectando talentos musicais com oportunidades incríveis!
-      </p>
-      <p className="text-lg">Em breve, mais informações!</p>
+      <div className="mx-auto max-w-6xl px-4 py-10 md:px-6 md:py-20">
+        {/* Hero */}
+        <section className="mb-10 text-center md:mb-20">
+          <h1 className="mb-4 text-3xl leading-tight font-bold md:mb-6 md:text-6xl">
+            Encontre músicos para seu evento com facilidade
+          </h1>
+          <p className="text-muted-foreground mb-6 text-base md:mb-8 md:text-xl">
+            A plataforma mais prática para contratar músicos de todo o Brasil
+          </p>
+          <div className="flex flex-col items-center justify-center gap-4 md:flex-row">
+            <input
+              type="text"
+              placeholder="Buscar músicos cadastrados..."
+              className="border-border focus:ring-primary w-full max-w-md rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
+            />
+            <Button
+              variant="default"
+              className="bg-primary hover:bg-primary/80 text-primary-foreground rounded-b-sm px-6 py-3 font-semibold transition"
+            >
+              Buscar músicos
+            </Button>
+          </div>
+        </section>
 
-      <Button
-        onClick={() =>
-          window.open("https://wa.me/5535998102070", "_blank", "noopener,noreferrer")
-        }
-        className="bg-primary hover:bg-primary/80 text-white"
-      >
-        Fale conosco no WhatsApp
-      </Button>
+        {/* Benefícios */}
+        <section className="mb-10 grid grid-cols-1 gap-6 text-center md:mb-20 md:grid-cols-3 md:gap-10">
+          <div>
+            <UserPlus className="text-primary mx-auto mb-4 h-10 w-10 md:h-12 md:w-12" />
+            <h3 className="mb-2 text-xl font-bold md:text-2xl">
+              Cadastro rápido
+            </h3>
+            <p className="text-muted-foreground text-sm md:text-base">
+              Crie seu perfil em minutos e comece a ser encontrado.
+            </p>
+          </div>
+          <div>
+            <Search className="text-primary mx-auto mb-4 h-10 w-10 md:h-12 md:w-12" />
+            <h3 className="mb-2 text-xl font-bold md:text-2xl">
+              Busca inteligente
+            </h3>
+            <p className="text-muted-foreground text-sm md:text-base">
+              Filtre músicos por localização, estilo e disponibilidade.
+            </p>
+          </div>
+          <div>
+            <CheckCircle className="text-primary mx-auto mb-4 h-10 w-10 md:h-12 md:w-12" />
+            <h3 className="mb-2 text-xl font-bold md:text-2xl">
+              Perfil verificado
+            </h3>
+            <p className="text-muted-foreground text-sm md:text-base">
+              Perfis verificados garantem que você está lidando com músicos
+              reais e confiáveis.
+            </p>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="text-center">
+          <h2 className="mb-4 text-2xl font-bold md:text-3xl">
+            Pronto para começar?
+          </h2>
+          <p className="text-muted-foreground mb-4 text-sm md:mb-6 md:text-base">
+            Crie seu perfil agora ou encontre músicos ideais para o seu evento.
+          </p>
+          <div className="flex flex-col justify-center gap-4 md:flex-row">
+            <a
+              href="/signup"
+              className="bg-primary hover:bg-primary/80 text-primary-foreground rounded-xl px-6 py-3 font-semibold transition"
+            >
+              Cadastrar músico
+            </a>
+            <a
+              href="#"
+              className="border-border hover:bg-muted rounded-xl border px-6 py-3 font-semibold transition"
+            >
+              Explorar músicos
+            </a>
+          </div>
+        </section>
+      </div>
     </main>
   );
 }
