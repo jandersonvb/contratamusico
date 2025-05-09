@@ -1,5 +1,13 @@
 "use client";
-import { UserPlus, Search, CheckCircle } from "lucide-react";
+import {
+  UserPlus,
+  Search,
+  CheckCircle,
+  Facebook,
+  Twitter,
+  Instagram,
+} from "lucide-react";
+import Image from "next/image";
 
 import { Button } from "@/app/_components/ui/button";
 import {
@@ -8,33 +16,33 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/app/_components/ui/dropdown-menu";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <main className="bg-background text-foreground min-h-screen">
       {/* Header */}
       <header className="border-border bg-background/80 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 flex w-full items-center justify-between border-b px-4 py-4 backdrop-blur md:px-6">
-        <div className="flex items-center gap-1 text-lg font-bold text-white md:text-xl">
-          <img
-            src="/logo.png"
-            alt="ContrataMúsico Logo"
-            className="h-6 md:h-8"
-          />
+        <Link
+          href="/"
+          className="flex items-center gap-1 text-lg font-bold text-white md:text-xl"
+        >
+          <Image src="/logo.png" alt="Logo" width={50} height={50} />
           <span className="text-white">ContrataMúsico</span>
-        </div>
+        </Link>
         <nav className="hidden items-center justify-center gap-4 text-sm font-medium md:flex">
-          <a href="#" className="hover:underline">
+          {/* <a href="#" className="hover:underline">
             Buscar músicos
           </a>
           <a href="#" className="hover:underline">
             Sou músico
-          </a>
-          <a
-            href="/login"
+          </a> */}
+          <Link
+            href="/auth/login"
             className="bg-primary hover:bg-primary/80 text-primary-foreground rounded-lg px-4 py-2 text-center font-medium transition"
           >
             Entrar
-          </a>
+          </Link>
         </nav>
         <div className="md:hidden">
           <DropdownMenu>
@@ -57,7 +65,7 @@ export default function Home() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem>
+              {/* <DropdownMenuItem>
                 <a href="#" className="w-full text-left">
                   Buscar músicos
                 </a>
@@ -66,7 +74,7 @@ export default function Home() {
                 <a href="#" className="w-full text-left">
                   Sou músico
                 </a>
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
               <DropdownMenuItem>
                 <a href="/login" className="w-full text-left">
                   Entrar
@@ -142,20 +150,57 @@ export default function Home() {
             Crie seu perfil agora ou encontre músicos ideais para o seu evento.
           </p>
           <div className="flex flex-col justify-center gap-4 md:flex-row">
-            <a
-              href="/signup"
+            <Link
+              href="/auth/signup"
               className="bg-primary hover:bg-primary/80 text-primary-foreground rounded-xl px-6 py-3 font-semibold transition"
             >
               Cadastrar músico
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              href="/"
               className="border-border hover:bg-muted rounded-xl border px-6 py-3 font-semibold transition"
             >
               Explorar músicos
-            </a>
+            </Link>
           </div>
         </section>
+
+        {/* Footer */}
+        <footer className="bg-background mt-30 w-full py-4 text-center">
+          <div className="mb-4 flex justify-center gap-4">
+            <Link
+              href="#"
+              // target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              className="hover:text-primary transition"
+            >
+              <Facebook className="h-6 w-6" />
+            </Link>
+            <Link
+              href="#"
+              // target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Twitter"
+              className="hover:text-primary transition"
+            >
+              <Twitter className="h-6 w-6" />
+            </Link>
+            <Link
+              href="#"
+              // target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="hover:text-primary transition"
+            >
+              <Instagram className="h-6 w-6" />
+            </Link>
+          </div>
+          <p>
+            &copy; {new Date().getFullYear()} ContrataMúsico. Todos os direitos
+            reservados.
+          </p>
+        </footer>
       </div>
     </main>
   );
