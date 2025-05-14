@@ -1,4 +1,3 @@
-"use client";
 import {
   UserPlus,
   Search,
@@ -17,8 +16,16 @@ import {
   DropdownMenuItem,
 } from "@/app/_components/ui/dropdown-menu";
 import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+  const { userId } = await auth();
+
+  if (userId) {
+    redirect("/dashboard"); // Redirect to the home page if the user is already logged in
+  }
+
   return (
     <main className="bg-background text-foreground min-h-screen">
       {/* Header */}
@@ -76,7 +83,7 @@ export default function Home() {
                 </a>
               </DropdownMenuItem> */}
               <DropdownMenuItem>
-                <a href="/login" className="w-full text-left">
+                <a href="/auth/login" className="block w-full text-center">
                   Entrar
                 </a>
               </DropdownMenuItem>
