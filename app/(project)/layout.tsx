@@ -40,7 +40,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} dark antialiased`}
       >
-        <ClerkProvider appearance={{ baseTheme: dark }}>
+        <ClerkProvider
+          appearance={{ baseTheme: dark }}
+          publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+        >
           {children}
         </ClerkProvider>
       </body>
