@@ -9,6 +9,7 @@ import {
 import Image from "next/image";
 
 import { Button } from "@/app/_components/ui/button";
+
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -18,6 +19,7 @@ import {
 import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { Input } from "../_components/ui/input";
 
 export default async function Home() {
   const { userId } = await auth();
@@ -30,27 +32,43 @@ export default async function Home() {
     <main className="bg-background text-foreground min-h-screen">
       {/* Header */}
       <header className="border-border bg-background/80 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 flex w-full items-center justify-between border-b px-4 py-4 backdrop-blur md:px-6">
-        <Link
-          href="/"
-          className="flex items-center gap-1 text-lg font-bold text-white md:text-xl"
-        >
-          <Image src="/logo.png" alt="Logo" width={50} height={50} />
-          <span className="text-white">ContrataMúsico</span>
-        </Link>
-        <nav className="hidden items-center justify-center gap-4 text-sm font-medium md:flex">
-          {/* <a href="#" className="hover:underline">
-            Buscar músicos
-          </a>
-          <a href="#" className="hover:underline">
-            Sou músico
-          </a> */}
+        <div className="flex items-center gap-4">
           <Link
-            href="/auth/login"
-            className="bg-primary hover:bg-primary/80 text-primary-foreground rounded-lg px-4 py-2 text-center font-medium transition"
+            href="/"
+            className="flex items-center gap-1 text-lg font-bold text-white md:text-xl"
           >
-            Entrar
+            <Image src="/logo.png" alt="Logo" width={50} height={50} />
+            <span className="text-white">ContrataMúsico</span>
           </Link>
-        </nav>
+          <nav className="hidden items-center justify-center gap-4 text-sm font-medium md:flex">
+            <a href="#" className="text-white hover:underline">
+              Buscar músicos
+            </a>
+            <a href="#" className="text-white hover:underline">
+              Sou músico
+            </a>
+          </nav>
+        </div>
+        <div className="hidden flex-1 items-center justify-between space-x-2 md:flex md:justify-end">
+          <Link href="/auth/login">
+            <Button
+              variant="ghost"
+              className="border-border hover:bg-muted rounded-lg border text-center font-medium transition"
+            >
+              Login
+            </Button>
+          </Link>
+
+          <Link href="/auth/signup">
+            <Button
+              variant="default"
+              className="bg-primary hover:bg-primary/80 text-primary-foreground rounded-b-sm font-semibold transition"
+            >
+              Cadastre-se
+            </Button>
+          </Link>
+        </div>
+
         <div className="md:hidden">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -72,20 +90,15 @@ export default async function Home() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
-              {/* <DropdownMenuItem>
-                <a href="#" className="w-full text-left">
-                  Buscar músicos
-                </a>
+              <DropdownMenuItem>
+                <Link href="/auth/login" className="block w-full text-center">
+                  Login
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <a href="#" className="w-full text-left">
-                  Sou músico
-                </a>
-              </DropdownMenuItem> */}
-              <DropdownMenuItem>
-                <a href="/auth/login" className="block w-full text-center">
-                  Entrar
-                </a>
+                <Link href="/auth/signup" className="block w-full text-center">
+                  Cadastre-se
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -93,26 +106,22 @@ export default async function Home() {
       </header>
 
       <div className="mx-auto max-w-6xl px-4 py-10 md:px-6 md:py-20">
-        {/* Hero */}
         <section className="mb-10 text-center md:mb-20">
           <h1 className="mb-4 text-3xl leading-tight font-bold md:mb-6 md:text-6xl">
-            Encontre músicos para seu evento com facilidade
+            Encontre o Músico Perfeito para Seu Evento
           </h1>
           <p className="text-muted-foreground mb-6 text-base md:mb-8 md:text-xl">
             A plataforma mais prática para contratar músicos de todo o Brasil
           </p>
           <div className="flex flex-col items-center justify-center gap-4 md:flex-row">
-            <input
+            <Input
               type="text"
               placeholder="Buscar músicos cadastrados..."
-              className="border-border focus:ring-primary w-full max-w-md rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
+              className="flex-1"
             />
-            <Button
-              variant="default"
-              className="bg-primary hover:bg-primary/80 text-primary-foreground rounded-b-sm px-6 py-3 font-semibold transition"
-            >
-              Buscar músicos
-            </Button>
+            <Link href="">
+              <Button variant="default">Buscar músicos</Button>
+            </Link>
           </div>
         </section>
 
@@ -157,17 +166,11 @@ export default async function Home() {
             Crie seu perfil agora ou encontre músicos ideais para o seu evento.
           </p>
           <div className="flex flex-col justify-center gap-4 md:flex-row">
-            <Link
-              href="/auth/signup"
-              className="bg-primary hover:bg-primary/80 text-primary-foreground rounded-xl px-6 py-3 font-semibold transition"
-            >
-              Cadastrar músico
+            <Link href="/auth/signup">
+              <Button variant="default">Cadastrar músico</Button>
             </Link>
-            <Link
-              href="/"
-              className="border-border hover:bg-muted rounded-xl border px-6 py-3 font-semibold transition"
-            >
-              Explorar músicos
+            <Link href="/">
+              <Button variant="ghost">Explorar músicos</Button>
             </Link>
           </div>
         </section>
