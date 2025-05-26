@@ -1,9 +1,5 @@
 import type { Metadata } from "next";
 
-import { ClerkProvider } from "@clerk/nextjs";
-
-import { dark } from "@clerk/themes";
-
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -20,7 +16,7 @@ const geistMono = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Contrata Musico | encontre o músico ideal para sua banda",
+  title: "Contrata Musico - Encontre o Músico Ideal",
   description:
     "Contrata Musico é uma plataforma que conecta músicos e bandas, facilitando a busca pelo músico ideal para sua banda.",
   icons: {
@@ -36,16 +32,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} dark antialiased`}
-      >
-        <ClerkProvider
-          appearance={{ baseTheme: dark }}
-          publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
-        >
-          {children}
-        </ClerkProvider>
+    <html lang="pt-BR">
+      <body className={`${geistSans.variable} ${geistMono.variable} dark antialiased`}>
+        {children}
       </body>
     </html>
   );
