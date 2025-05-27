@@ -125,7 +125,6 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Benefícios */}
         <section className="mb-10 grid grid-cols-1 gap-6 text-center md:mb-20 md:grid-cols-3 md:gap-10">
           <div>
             <UserPlus className="text-primary mx-auto mb-4 h-10 w-10 md:h-12 md:w-12" />
@@ -157,7 +156,6 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* CTA */}
         <section className="text-center">
           <h2 className="mb-4 text-2xl font-bold md:text-3xl">
             Pronto para começar?
@@ -175,7 +173,6 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Footer */}
         <footer className="bg-background mt-30 w-full py-4 text-center">
           <div className="mb-4 flex justify-center gap-4">
             <Link
