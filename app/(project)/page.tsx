@@ -17,15 +17,16 @@ import {
   DropdownMenuItem,
 } from "@/app/_components/ui/dropdown-menu";
 import Link from "next/link";
-import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { Input } from "../_components/ui/input";
+import { auth } from "@/app/lib/auth";
 
 export default async function Home() {
-  const { userId } = await auth();
+  const session = await auth();
 
-  if (userId) {
-    redirect("/dashboard"); // Redirect to the home page if the user is already logged in
+  if (session) {
+    // If the user is authenticated, redirect to the dashboard
+    redirect("/dashboard");
   }
 
   return (
@@ -40,14 +41,14 @@ export default async function Home() {
             <Image src="/logo.png" alt="Logo" width={50} height={50} />
             <span className="text-white">ContrataMúsico</span>
           </Link>
-          <nav className="hidden items-center justify-center gap-4 text-sm font-medium md:flex">
+          {/* <nav className="hidden items-center justify-center gap-4 text-sm font-medium md:flex">
             <a href="#" className="text-white hover:underline">
               Buscar músicos
             </a>
             <a href="#" className="text-white hover:underline">
               Sou músico
             </a>
-          </nav>
+          </nav> */}
         </div>
         <div className="hidden flex-1 items-center justify-between space-x-2 md:flex md:justify-end">
           <Link href="/auth/login">
