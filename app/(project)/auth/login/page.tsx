@@ -8,7 +8,6 @@ import {
   CardTitle,
 } from "@/app/_components/ui/card";
 
-
 import { Input } from "@/app/_components/ui/input";
 import { Label } from "@/app/_components/ui/label";
 import { handleAuth } from "@/app/actions/handle-auth";
@@ -16,8 +15,6 @@ import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 
 export default async function LoginPage() {
-
-
   return (
     <div className="bg-muted/40 flex min-h-screen items-center justify-center">
       <Card className="w-full max-w-sm">
@@ -48,12 +45,12 @@ export default async function LoginPage() {
         <CardContent>
           <form action={handleAuth}>
             <Button
-              variant="outline"
-              className="flex w-full items-center justify-center gap-2 border border-transparent text-white hover:border-gray-400 focus:border-gray-400 focus:ring-0"
+              variant="ghost"
+              className="flex w-full items-center justify-center gap-2 text-gray-700 hover:bg-gray-100 focus:ring-2 focus:ring-gray-300"
               type="submit"
             >
               <FcGoogle size={20} />
-              Google
+              Continuar com Google
             </Button>
           </form>
         </CardContent>

@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Footer } from "../components/Footer";
+import { Header } from "../components/Header";
+import { Toaster } from "../_components/ui/sonner";
+import { SessionProvider } from "next-auth/react";
 
 const geistSans = Inter({
   subsets: ["latin"],
@@ -16,7 +20,7 @@ const geistMono = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Contrata Musico - Encontre o Músico Ideal",
+  title: "Contrata Musico | Encontre o Músico Ideal",
   description:
     "Contrata Musico é uma plataforma que conecta músicos e bandas, facilitando a busca pelo músico ideal para sua banda.",
   icons: {
@@ -33,8 +37,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className={`${geistSans.variable} ${geistMono.variable} dark antialiased`}>
-        {children}
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <SessionProvider>
+          <Toaster />
+          <Header />
+          {children}
+          <Footer />
+        </SessionProvider>
       </body>
     </html>
   );
