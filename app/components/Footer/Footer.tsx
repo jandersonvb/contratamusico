@@ -16,7 +16,7 @@ interface SocialIconProps {
 
 function SocialIcon({ href, icon: Icon, name }: SocialIconProps) {
   return (
-    <a
+    <Link
       href={href}
       target="_blank"
       rel="noopener noreferrer"
@@ -24,7 +24,7 @@ function SocialIcon({ href, icon: Icon, name }: SocialIconProps) {
       aria-label={`Link para ${name}`}
     >
       <Icon className="w-5 h-5" />
-    </a>
+    </Link>
   );
 }
 

@@ -39,6 +39,8 @@ import {
   SheetTrigger,
 } from "@/app/_components/ui/sheet"; // Shadcn Sheet
 import { Avatar, AvatarFallback, AvatarImage } from "@/app/_components/ui/avatar"; // Shadcn Avatar
+import { Badge } from "@/app/_components/ui/badge";
+import { SearchBar } from "../SearchBar/SarchBar";
 
 // --- Interfaces e Tipos (podem vir de um arquivo de tipos global) ---
 // Certifique-se de que esta tipagem está disponível globalmente no seu projeto (e.g., types/next-auth.d.ts)
@@ -90,6 +92,7 @@ const navLinks: NavLink[] = [
   // Ações de Botão (Desktop, para users logados)
   { href: "/pesquisar", label: "Pesquisar", icon: Search, showIn: 'action-button', authRequired: true },
   { href: "/dashboard/create", label: "Publicar", icon: PlusCircle, showIn: 'action-button', authRequired: true },
+  { href: "/dashboard/musician/profile/create", label: "Criar Perfil", icon: UserPlus, showIn: 'action-button', authRequired: true },
 
   // Links para Guest (Não Logado) - Ações e Mobile Sheet
   { href: "/auth/signup", label: "Cadastre-se", icon: UserPlus, showIn: 'desktop-nav', authRequired: false }, // Botão desktop Cadastre-se
@@ -171,31 +174,31 @@ function UserProfileSection({ session, userRole, getInitials, onSignOut }: UserP
     <div className="flex items-center gap-4">
       {/* Botões de Ação para logados (Pesquisar, Publicar) - visíveis apenas em desktop */}
       <div className="hidden md:flex items-center gap-2">
-        <HeaderNavLink
-          link={navLinks.find(l => l.label === "Pesquisar" && l.showIn === 'action-button')!}
-          variant="outline"
-          className="text-primary hover:bg-primary/10" // Estilo para o botão de pesquisa
+        <SearchBar
         />
+
         <HeaderNavLink
-          link={navLinks.find(l => l.label === "Publicar" && l.showIn === 'action-button')!}
-          variant="default"
+          link={navLinks.find(l => l.label === "Criar Perfil" && l.showIn === 'action-button')!}
+          variant="secondary"
         />
       </div>
 
       {/* Ícone de Notificações - Visível apenas em desktop */}
       <Link href="/dashboard/notifications" className="relative p-2 rounded-full hover:bg-gray-100 transition-colors hidden md:block">
         <Bell className="h-5 w-5 text-gray-600" />
-        <span className="absolute -top-1 -right-1 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
-          3
+        <span className="absolute -top-1 -right-1">
+          <Badge variant="destructive" className="h-5 w-5 text-xs flex items-center justify-center">
+            3
+          </Badge>
         </span>
       </Link>
 
       {/* Dropdown do Perfil - Visível apenas em desktop */}
-      <DropdownMenu>
+      <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative h-9 w-9 rounded-full overflow-hidden">
-            <Avatar className="h-full w-full">
-              {session.user?.image ? (
+            <Avatar>
+              {session.user?.image && session.user.image.startsWith("http") ? (
                 <AvatarImage src={session.user.image} alt="Avatar do Usuário" />
               ) : (
                 <AvatarFallback className="bg-gray-200 text-gray-600 font-semibold text-sm">
@@ -205,7 +208,7 @@ function UserProfileSection({ session, userRole, getInitials, onSignOut }: UserP
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-64" align="start" forceMount>
+        <DropdownMenuContent className="w-64 max-h-96 mr-2" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">
@@ -331,8 +334,8 @@ export function Header({ session, userRole }: { session: Session | null, userRol
                   <>
                     {/* Informações do usuário logado no Sheet */}
                     <div className="flex items-center gap-3 mb-4 p-2 bg-muted rounded-md">
-                      <Avatar className="h-12 w-12">
-                        {session.user?.image ? (
+                      <Avatar>
+                        {session.user?.image && session.user.image.startsWith("http") ? (
                           <AvatarImage src={session.user.image} alt="Avatar do Usuário" />
                         ) : (
                           <AvatarFallback className="bg-gray-200 text-gray-600 font-semibold text-base">
