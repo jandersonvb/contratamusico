@@ -48,7 +48,7 @@ export const metadata = {
 export default async function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: LayoutProps["children"];
 }) {
   return (
     <html lang="pt-BR">
