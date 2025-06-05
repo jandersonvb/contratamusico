@@ -2,7 +2,7 @@
 declare module "next" {
   // Re-declare LayoutProps para garantir que 'types' não seja um requisito
   interface LayoutProps {
-    types?: unknown; // Torna 'types' opcional, se for o caso
+    types?: string[]; // Torna 'types' opcional, se for o caso
     children: React.ReactNode;
     params?: Record<string, string | string[]>;
     searchParams?: Record<string, string | string[]>;
