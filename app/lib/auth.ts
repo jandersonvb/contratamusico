@@ -1,8 +1,8 @@
 // lib/auth.ts
-import NextAuth, { type DefaultSession } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import FacebookProvider from "next-auth/providers/facebook"; // Importado corretamente
 import { FirestoreAdapter } from "@auth/firebase-adapter"; // Importado corretamente
+import NextAuth, { type DefaultSession } from "next-auth";
+import FacebookProvider from "next-auth/providers/facebook"; // Importado corretamente
+import GoogleProvider from "next-auth/providers/google";
 import { firebaseCert } from "./firebase"; // Certifique-se de que é o config do Firebase Admin SDK
 
 // IMPORTANTE: Estenda a interface Session e User para incluir 'role' e 'image'
@@ -13,23 +13,22 @@ declare module "next-auth" {
       name?: string | null;
       email?: string | null;
       image?: string | null; // Adiciona 'image'
-      role?: 'musician' | 'contractor' | 'admin' | null; // Adiciona 'role'
+      role?: "musician" | "contractor" | "admin" | null; // Adiciona 'role'
     } & DefaultSession["user"];
   }
 
   interface User {
-    role?: 'musician' | 'contractor' | 'admin' | null; // Adiciona 'role' ao User do adaptador
+    role?: "musician" | "contractor" | "admin" | null; // Adiciona 'role' ao User do adaptador
   }
 }
 
 declare module "next-auth" {
   interface JWT {
     id?: string;
-    role?: 'musician' | 'contractor' | 'admin' | null;
+    role?: "musician" | "contractor" | "admin" | null;
     picture?: string | null; // Para o token JWT
   }
 }
-
 
 export const {
   handlers: { GET, POST },
@@ -42,7 +41,8 @@ export const {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
-    FacebookProvider({ // Verifique se você tem Client ID e Secret para Facebook
+    FacebookProvider({
+      // Verifique se você tem Client ID e Secret para Facebook
       clientId: process.env.FACEBOOK_CLIENT_ID!,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
     }),
@@ -55,7 +55,7 @@ export const {
     // Se você quer que a sessão do cliente reflita o DB, o JWT precisa estar atualizado.
   },
   callbacks: {
-    async session({ session, token, user }) {
+    async session({ session, token }) {
       // Quando strategy: "jwt", 'token' é a fonte principal para a sessão do cliente.
       // 'user' só é preenchido se strategy for "database"
       // No entanto, FirestoreAdapter usa 'database' strategy internamente para gerenciar usuários,
@@ -67,7 +67,11 @@ export const {
         session.user.name = token.name;
         session.user.email = token.email ?? ""; // Fallback to an empty string if token.email is undefined
         session.user.image = token.picture; // A imagem já deve vir no token do provedor
-        session.user.role = token.role as 'musician' | 'contractor' | 'admin' | null; // Adicione o role do token
+        session.user.role = token.role as
+          | "musician"
+          | "contractor"
+          | "admin"
+          | null; // Adicione o role do token
       }
       // TODO: Se 'token.role' não vier automaticamente do provedor,
       // você precisará buscá-lo do seu Firestore aqui ou no callback 'jwt'.
@@ -86,7 +90,9 @@ export const {
         token.name = user.name;
         token.email = user.email;
         token.picture = user.image; // Garante que a imagem do DB/provedor vá para o token
-        token.role = (user as any).role; // Garante que a role do DB vá para o token
+        token.role = (
+          user as { role?: "musician" | "contractor" | "admin" | null }
+        ).role; // Garante que a role do DB vá para o token
       }
       // Para garantir que o 'picture' do provedor vá para o token na primeira autenticação:
       if (account && profile) {
@@ -114,5 +120,5 @@ export const {
       }
       return baseUrl;
     },
-  }
+  },
 });
