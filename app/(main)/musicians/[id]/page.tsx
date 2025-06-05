@@ -81,13 +81,7 @@ const musicianData = {
   contactInfo: "joao.silva@email.com / (11) 99999-8888", // Define how to handle public/private later
 };
 
-// Removed unused import as 'PageProps' is not exported from 'next'
-
-interface MusicianProfilePageProps {
-  params: { id: string };
-}
-
-const MusicianProfilePage: React.FC<MusicianProfilePageProps> = () => {
+export default function MusicianProfilePage() {
   // TODO: Fetch musician data based on params.id using Prisma
   const musician = musicianData;
 
@@ -331,6 +325,4 @@ const MusicianProfilePage: React.FC<MusicianProfilePageProps> = () => {
       </div>
     </div>
   );
-};
-
-export default MusicianProfilePage;
+}
