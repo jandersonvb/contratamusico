@@ -1,9 +1,9 @@
 // components/footer/Footer.tsx
-'use client'; // Mantido para o Accordion, que possui interatividade.
+"use client"; // Mantido para o Accordion, que possui interatividade.
 
-import { Facebook, Instagram, Linkedin, Twitter, Youtube } from 'lucide-react';
-import Link from 'next/link';
-import Image from 'next/image';
+import { Facebook, Instagram, Linkedin, Twitter, Youtube } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
 
 // NOTA: O subcomponente SocialLinks é incorporado aqui para concisão.
 // Em projetos maiores, considere movê-lo para um arquivo separado.
@@ -20,10 +20,10 @@ function SocialIcon({ href, icon: Icon, name }: SocialIconProps) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="w-10 h-10 rounded-full bg-muted text-muted-foreground flex items-center justify-center transition-all duration-300 hover:bg-primary hover:text-primary-foreground hover:scale-110"
+      className="bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 hover:scale-110"
       aria-label={`Link para ${name}`}
     >
-      <Icon className="w-5 h-5" />
+      <Icon className="h-5 w-5" />
     </Link>
   );
 }
@@ -31,34 +31,30 @@ function SocialIcon({ href, icon: Icon, name }: SocialIconProps) {
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
-
-
   const resourcesLinks = [
-    { name: 'Blog', href: '/blog' },
-    { name: 'FAQ', href: '/faq' },
-    { name: 'Suporte', href: '/suporte' },
-    { name: 'Termos de Uso', href: '/termos' },
-    { name: 'Política de Privacidade', href: '/privacidade' },
+    { name: "FAQ", href: "/faq" },
+    { name: "Suporte", href: "/suporte" },
+    { name: "Termos de Uso", href: "/termos" },
+    { name: "Política de Privacidade", href: "/privacidade" },
   ];
 
   const socialMedia = [
-    { name: 'Facebook', href: '#', icon: Facebook },
-    { name: 'Instagram', href: '#', icon: Instagram },
-    { name: 'Twitter', href: '#', icon: Twitter },
-    { name: 'LinkedIn', href: '#', icon: Linkedin },
-    { name: 'YouTube', href: '#', icon: Youtube },
+    { name: "Facebook", href: "#", icon: Facebook },
+    { name: "Instagram", href: "#", icon: Instagram },
+    { name: "Twitter", href: "#", icon: Twitter },
+    { name: "LinkedIn", href: "#", icon: Linkedin },
+    { name: "YouTube", href: "#", icon: Youtube },
   ];
 
   return (
-    <footer className="bg-background text-foreground py-12 md:py-16 clear-both border-t border-border">
+    <footer className="bg-background text-foreground border-border clear-both border-t py-12 md:py-16">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Coluna 1: Logo e Descrição */}
           <div>
-
             <Link
               href="/"
-              className="text-foreground text-2xl font-extrabold no-underline mb-2 flex items-center"
+              className="text-foreground mb-2 flex items-center text-2xl font-extrabold no-underline"
             >
               <span>Contrata</span>
               <span className="text-primary ml-1">Musico</span>
@@ -67,7 +63,7 @@ export function Footer() {
                 alt="Logo ContrataMusico"
                 width={32}
                 height={32}
-                style={{ position: 'relative', top: '-4px', right: '4px' }}
+                style={{ position: "relative", top: "-4px", right: "4px" }}
               />
             </Link>
             <p className="text-muted-foreground text-sm">
@@ -77,7 +73,7 @@ export function Footer() {
 
           {/* Coluna 2: Links de Navegação */}
           <div>
-            <h4 className="text-lg font-semibold text-foreground mb-4">
+            <h4 className="text-foreground mb-4 text-lg font-semibold">
               Recursos
             </h4>
             <ul className="space-y-3">
@@ -96,7 +92,7 @@ export function Footer() {
 
           {/* Coluna 3: Redes Sociais */}
           <div>
-            <h4 className="text-lg font-semibold text-foreground mb-4">
+            <h4 className="text-foreground mb-4 text-lg font-semibold">
               Conecte-se
             </h4>
             <div className="flex gap-3">
@@ -113,10 +109,10 @@ export function Footer() {
 
           {/* Coluna 4: Contato */}
           <div>
-            <h4 className="text-lg font-semibold text-foreground mb-4">
+            <h4 className="text-foreground mb-4 text-lg font-semibold">
               Contato
             </h4>
-            <address className="not-italic text-muted-foreground text-sm space-y-2">
+            <address className="text-muted-foreground space-y-2 text-sm not-italic">
               <p>Avenida Padre Lourenço da Costa,3415</p>
               <p>Morro Grande, Itajubá - MG, Brasil</p>
               <p>CEP: 37502-710</p>
@@ -134,7 +130,7 @@ export function Footer() {
         </div>
 
         {/* Direitos Autorais e Links Legais */}
-        <div className="text-center text-muted-foreground text-sm mt-8">
+        <div className="text-muted-foreground mt-8 text-center text-sm">
           <p className="mb-2">
             © {currentYear} ContrataMusico. Todos os direitos reservados.
           </p>
