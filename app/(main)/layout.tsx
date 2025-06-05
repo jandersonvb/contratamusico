@@ -1,10 +1,6 @@
 import type { Metadata } from "next";
 
 import { Toaster } from "sonner";
-// import { Footer } from "../components/Footer/Footer";
-// import { Header } from "../components/Header/Header";
-// import { auth } from "../lib/auth";
-// import { db } from "../lib/firebase";
 
 import { Inter, Poppins } from "next/font/google";
 import { Footer } from "../components/Footer/Footer";
