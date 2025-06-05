@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+// Removed import for Metadata as it is not exported by "next"
 
 import { Toaster } from "sonner";
 
@@ -17,7 +17,7 @@ const poppins = Poppins({
   display: "swap",
 });
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "ContrataMúsico - Encontre o Músico Perfeito para Seu Evento",
   description:
     "A plataforma mais prática para contratar músicos qualificados de todo o Brasil. Crie seu perfil, explore talentos e contrate com facilidade.",

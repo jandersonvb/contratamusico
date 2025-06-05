@@ -2,9 +2,7 @@
 // Este layout minimalista é para rotas de autenticação (login, cadastro, etc.)
 // Ele NÃO inclui o Header e Footer globais.
 
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
+export const metadata = {
   title: "Autenticação - ContrataMusico",
   description: "Faça login ou cadastre-se na plataforma ContrataMusico.",
 };
