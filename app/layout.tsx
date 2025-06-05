@@ -1,5 +1,3 @@
-import { type Metadata } from "next/types";
-
 import "../app/globals.css";
 
 import { Inter, Poppins } from "next/font/google";
@@ -13,8 +11,7 @@ const poppins = Poppins({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "ContrataMúsico - Encontre o Músico Perfeito para Seu Evento",
+export const metadata = {
   description:
     "A plataforma mais prática para contratar músicos qualificados de todo o Brasil. Crie seu perfil, explore talentos e contrate com facilidade.",
   openGraph: {
