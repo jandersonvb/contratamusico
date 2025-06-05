@@ -2,8 +2,6 @@ import { type Metadata } from "next/types";
 
 import "../app/globals.css";
 
-import { Toaster } from "sonner";
-
 import { Inter, Poppins } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -59,7 +57,6 @@ export default async function RootLayout({
     <html lang="pt-BR">
       <body className={`${inter.variable} ${poppins.variable}`}>
         {children}
-        <Toaster richColors position="bottom-right" />{" "}
       </body>
     </html>
   );
