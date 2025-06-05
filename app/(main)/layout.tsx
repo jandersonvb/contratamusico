@@ -7,6 +7,7 @@ import { Footer } from "../components/Footer/Footer";
 import { Header } from "../components/Header/Header";
 import { auth } from "../lib/auth";
 import { db } from "../lib/firebase";
+import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -99,12 +100,14 @@ export default async function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={`${inter.variable} ${poppins.variable}`}>
-        <Header session={session} userRole={userRole} />{" "}
-        {/* Passa a sessão e a role para o Header */}
-        {children}
-        <Footer />
-        <Toaster richColors position="bottom-right" />{" "}
-        {/* Configura o Toaster */}
+        <SessionProvider session={session}>
+          <Header session={session} userRole={userRole} />{" "}
+          {/* Passa a sessão e a role para o Header */}
+          {children}
+          <Footer />
+          <Toaster richColors position="bottom-right" />{" "}
+          {/* Configura o Toaster */}
+        </SessionProvider>
       </body>
     </html>
   );

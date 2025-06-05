@@ -13,10 +13,9 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR">
-      <body className="bg-background text-foreground font-sans antialiased">
-        {children}
-      </body>
-    </html>
+    <>
+      {children}{" "}
+      {/* APENAS o conteúdo da página de autenticação (Login, SignUp) será renderizado aqui */}
+    </>
   );
 }
