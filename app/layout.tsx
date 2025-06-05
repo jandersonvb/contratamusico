@@ -1,3 +1,7 @@
+// app/layout.tsx
+
+// Importe Metadata diretamente de "next".
+
 import "../app/globals.css";
 
 import { Inter, Poppins } from "next/font/google";
@@ -11,7 +15,9 @@ const poppins = Poppins({
   display: "swap",
 });
 
+// Tipagem explícita para metadata
 export const metadata = {
+  title: "ContrataMúsico - Encontre o Músico Perfeito para Seu Evento",
   description:
     "A plataforma mais prática para contratar músicos qualificados de todo o Brasil. Crie seu perfil, explore talentos e contrate com facilidade.",
   openGraph: {
@@ -46,9 +52,11 @@ export const metadata = {
 };
 
 export default async function RootLayout({
+  // Tipagem direta para children como React.ReactNode, que é o que o Next.js espera.
+  // Isso evita qualquer conflito com uma 'LayoutProps' externa que possa exigir 'types'.
   children,
 }: {
-  children: LayoutProps["children"];
+  children: React.ReactNode;
 }) {
   return (
     <html lang="pt-BR">
