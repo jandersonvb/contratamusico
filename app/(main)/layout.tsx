@@ -2,21 +2,11 @@
 
 import { Toaster } from "sonner";
 
-import { Inter, Poppins } from "next/font/google";
+import { SessionProvider } from "next-auth/react";
 import { Footer } from "../components/Footer/Footer";
 import { Header } from "../components/Header/Header";
 import { auth } from "../lib/auth";
 import { db } from "../lib/firebase";
-import { SessionProvider } from "next-auth/react";
-
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-poppins",
-  display: "swap",
-});
 
 export const metadata = {
   title: "ContrataMúsico - Encontre o Músico Perfeito para Seu Evento",
@@ -53,7 +43,7 @@ export const metadata = {
   },
 };
 
-export default async function RootLayout({
+export default async function MainLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -67,18 +57,10 @@ export default async function RootLayout({
       const userDoc = await userRef.get();
       if (userDoc.exists) {
         const userData = userDoc.data();
-        // A role deve vir do Firestore. Se não existir, será null.
         userRole =
           (userData?.role as "musician" | "contractor" | "admin") || null;
 
-        // Se o usuário está logado e não tem role, redireciona para onboarding
-        // Isso é uma medida de segurança caso o redirect callback falhe
         if (!userRole && session.user.email) {
-          // Verifica se há email para evitar redirecionamentos em loops
-          // Não podemos usar redirect() diretamente aqui no layout se o children já foi renderizado.
-          // A melhor forma é no callback 'redirect' do NextAuth ou na página dashboard.
-          // Para evitar o erro de hidratação, é melhor que o Header receba a role correta.
-          // Se for redirecionado no auth.ts, o layout nem seria totalmente renderizado.
         }
       }
     } catch (error) {
@@ -87,28 +69,16 @@ export default async function RootLayout({
     }
   }
 
-  // Se o usuário está logado e não tem role, redireciona para onboarding
-  // ISSO DEVE SER FEITO NA PÁGINA ESPECÍFICA DO DASHBOARD OU VIA CALLBACK DO NEXTAUTH
-  // NO LAYOUT, É MAIS PARA GARANTIR QUE O HEADER TEM A INFO CORRETA
   if (session && !userRole && typeof window === "undefined") {
-    // Apenas no servidor
-    // console.log("Usuário logado sem role, redirecionando para onboarding...");
-    // redirect('/onboarding/select-role'); // Isso pode causar problemas se o Children já começou a renderizar
-    // É mais seguro fazer isso no middleware ou no próprio dashboard/page.tsx
   }
 
   return (
-    <html lang="pt-BR">
-      <body className={`${inter.variable} ${poppins.variable}`}>
-        <SessionProvider session={session}>
-          <Header session={session} userRole={userRole} />{" "}
-          {/* Passa a sessão e a role para o Header */}
-          {children}
-          <Footer />
-          <Toaster richColors position="bottom-right" />{" "}
-          {/* Configura o Toaster */}
-        </SessionProvider>
-      </body>
-    </html>
+    <SessionProvider session={session}>
+      <Header session={session} userRole={userRole} />{" "}
+      {/* Passa a sessão e a role para o Header */}
+      {children}
+      <Footer />
+      <Toaster richColors position="bottom-right" /> {/* Configura o Toaster */}
+    </SessionProvider>
   );
 }
