@@ -1,13 +1,12 @@
-import { Inter, Poppins } from "next/font/google";
+import { Roboto } from "next/font/google";
+
 import "./(main)/globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-poppins",
-  display: "swap",
+const roboto = Roboto({
+  weight: ['100', '300', '400', '500', '700', '900'], // Escolha os pesos que você usará
+  subsets: ['latin'],
+  variable: '--font-roboto', // Defina uma variável CSS para a fonte
+  display: 'swap', // Melhorar o carregamento da fonte
 });
 
 export const metadata = {
@@ -22,8 +21,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR">
-      <body className={`${inter.variable} ${poppins.variable}`}>
+    <html lang="pt-BR" className={roboto.variable}>
+      <body className="font-sans text-foreground antialiased">
         {children}
       </body>
     </html>

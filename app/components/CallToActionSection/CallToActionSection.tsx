@@ -46,12 +46,12 @@ export function CallToActionSection() {
           Junte-se à comunidade ContrataMusico hoje mesmo!
         </p>
         <div className="flex flex-col justify-center gap-4 sm:flex-row">
-          <Link href="/cadastro-musico">
+          <Link href="/signup">
             <Button size="lg" variant="default">
               <UserCheck2Icon className="mr-2 h-5 w-5" /> Cadastre-se Grátis
             </Button>
           </Link>
-          <Link href="/musicos">
+          <Link href="#">
             <Button
               size="lg"
               variant="outline"

@@ -99,12 +99,12 @@ export function HeroSection() {
           por quem busca seu som.
         </p>
         <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-          <Link href="/musicos">
+          <Link href="">
             <Button size="lg" variant="default">
               <Search className="mr-2 h-5 w-5" /> Encontrar Músicos
             </Button>
           </Link>
-          <Link href="/cadastro-musico">
+          <Link href="/signup">
             <Button size="lg" variant="secondary">
               <UserCheck className="mr-2 h-5 w-5" /> Cadastre-se Grátis
             </Button>
