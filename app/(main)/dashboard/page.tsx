@@ -1,6 +1,3 @@
-// app/(main)/dashboard/page.tsx
-// Server Component para o Dashboard principal.
-
 import { auth } from "@/app/lib/auth"; // Para obter a sessão
 import { redirect } from "next/navigation"; // Para redirecionamento
 import { db } from "@/app/lib/firebase"; // Para buscar a role do usuário no Firestore, se necessário

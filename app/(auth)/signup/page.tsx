@@ -1,9 +1,7 @@
-// app/(auth)/signup/page.tsx
-// Server Component para a página de Cadastro.
 import { auth } from "@/app/lib/auth"; // Para autenticação e redirecionamento
 import { redirect } from "next/navigation"; // Para redirecionamento no servidor
 
-import { SignupForm } from "@/app/components/SignupForm/SignupForm"; // Importa o novo formulário de cadastro
+import { SignupForm } from "@/app/(auth)/signup/components/SignupForm/SignupForm"; // Importa o novo formulário de cadastro
 import Image from "next/image"; // Para a imagem lateral
 
 export default async function SignupPage() {

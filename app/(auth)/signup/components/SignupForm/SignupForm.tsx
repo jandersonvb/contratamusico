@@ -9,22 +9,32 @@ import { RadioGroup, RadioGroupItem } from "@/app/_components/ui/radio-group";
 import Link from "next/link";
 import { toast } from "sonner"; // Para feedback ao usuário
 import { useRouter } from "next/navigation"; // Para redirecionamento
+import { signupUserApi } from "@/app/api";
+import type { AccountType } from "@/app/lib/types/auth";
+import { useAuthStore } from "@/app/lib/stores/authStore";
 
 export function SignupForm() {
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
-    accountType: "contractor", // Padrão
+    accountType: "contratante" as AccountType, // Define o tipo de conta padrão
   });
+
+  // Estado para controle de loading e erros
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const router = useRouter();
+
+  const { setSession } = useAuthStore();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
+
     setFormData((prev) => ({ ...prev, [id]: value }));
+
     // Limpa o erro ao digitar
     if (errors[id]) {
       setErrors((prev) => {
@@ -36,7 +46,14 @@ export function SignupForm() {
   };
 
   const handleAccountTypeChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, accountType: value }));
+    // Validação básica para garantir que o valor é um tipo de conta válido
+    if (value === "musico" || value === "contratante") {
+      setFormData((prev) => ({ ...prev, accountType: value as AccountType }));
+    } else {
+      // Opcional: Lidar com um valor inválido, embora o RadioGroup já restrinja
+      console.warn("Tipo de conta inválido selecionado:", value);
+    }
+
     if (errors.accountType) {
       setErrors((prev) => {
         const newErrors = { ...prev };
@@ -48,7 +65,9 @@ export function SignupForm() {
 
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
+
     if (!formData.name.trim()) newErrors.name = "Nome completo é obrigatório.";
+
     if (!formData.email.trim()) {
       newErrors.email = "E-mail é obrigatório.";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
@@ -57,12 +76,14 @@ export function SignupForm() {
     if (!formData.password) {
       newErrors.password = "Senha é obrigatória.";
     } else if (formData.password.length < 6) {
+      // Já estamos validando 6 no backend
       newErrors.password = "A senha deve ter no mínimo 6 caracteres.";
     }
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "As senhas não coincidem.";
     }
     if (!formData.accountType)
+      // Já tem um valor padrão, mas bom ter a validação
       newErrors.accountType = "Selecione um tipo de conta.";
 
     setErrors(newErrors);
@@ -71,6 +92,7 @@ export function SignupForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     setIsLoading(true);
 
     if (!validateForm()) {
@@ -80,24 +102,40 @@ export function SignupForm() {
     }
 
     try {
-      // Simulação de chamada de API para registro.
-      // Em uma aplicação real, você enviaria formData para sua API de registro.
-      // Ex: await fetch('/api/auth/register', { method: 'POST', body: JSON.stringify(formData) });
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      console.log("Dados de cadastro:", formData);
+      const response = await signupUserApi({
+        fullName: formData.name, // 'name' do formulário para 'fullName' da API
+        email: formData.email,
+        password: formData.password,
+        accountType: formData.accountType, // Já é AccountType
+      });
 
-      toast.success("Conta criada com sucesso! Redirecionando...");
+      if (!response) {
+        toast.error("Erro ao criar conta. Tente novamente.");
+        setIsLoading(false);
+        return;
+      }
 
-      // TODO: Após o cadastro bem-sucedido, você pode querer:
-      // 1. Logar o usuário automaticamente (usando signIn de next-auth/react).
-      // 2. Redirecionar para uma página de onboarding específica (ex: /onboarding/musician-profile para músicos).
-      // 3. Redirecionar para a página de login para que ele se autentique.
-
-      // Para este exemplo, vamos redirecionar para a página de login
-      router.push("/login"); // Lembre-se que a rota é /login, não /auth/login
+      // Sucesso no cadastro
+      setSession({
+        accessToken: response.accessToken,
+        user: {
+          id: response.user.id,
+          fullName: response.user.fullName,
+          email: response.user.email,
+          accountType: response.user.accountType,
+        },
+      });
+      toast.success("Conta criada com sucesso!");
+      router.push("/dashboard"); // Redireciona para o dashboard após o cadastro
     } catch (error) {
-      toast.error("Erro ao criar conta. Tente novamente.");
-      console.error("Erro de cadastro:", error);
+      console.error("Erro ao criar conta:", error);
+      if (error instanceof Error) {
+        // Se o erro for uma instância de Error, exibe a mensagem de erro
+        toast.error(error.message || "Erro ao criar conta. Tente novamente.");
+      } else {
+        // Se o erro não for uma instância de Error, exibe uma mensagem genérica
+        toast.error("Erro desconhecido ao criar conta. Tente novamente.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -188,12 +226,12 @@ export function SignupForm() {
           disabled={isLoading}
         >
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="contractor" id="type-contractor" />
-            <Label htmlFor="type-contractor">Quero Contratar </Label>
+            <RadioGroupItem value="contratante" id="type-contratante" />
+            <Label htmlFor="type-contratante">Quero Contratar </Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="musician" id="type-musician" />
-            <Label htmlFor="type-musician">Sou Músico</Label>
+            <RadioGroupItem value="musico" id="type-musico" />
+            <Label htmlFor="type-musico">Sou Músico</Label>
           </div>
         </RadioGroup>
         {errors.accountType && (
