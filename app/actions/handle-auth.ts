@@ -7,7 +7,7 @@ export async function handleAuth() {
 
   if (session) {
     return await signOut({
-      redirectTo: "/"
+      redirect: true
     });
   }
 
