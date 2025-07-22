@@ -47,18 +47,13 @@
 // Este arquivo define as opções de configuração do NextAuth.js
 // e exporta as funções helper para uso em Server/Client Components.
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth/next";
 import type { DefaultSession, DefaultUser, NextAuthOptions } from "next-auth"; // Importar NextAuthOptions aqui
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-// Adaptador (se estiver usando. Remova se não for usar Firestore)
-// import { FirestoreAdapter } from "@auth/firebase-adapter";
-// import { firebaseCert } from "./firebase"; // Config do Firebase Admin SDK
 
-// 1. EXTENSÃO DE TIPOS (declare module) - Recomenda-se colocar em `types/next-auth.d.ts`
-// Se você não tem esse arquivo ainda, pode manter aqui por enquanto.
 declare module "next-auth" {
   interface Session {
     user: {
@@ -83,8 +78,7 @@ declare module "next-auth/jwt" {
   }
 }
 
-// 2. DEFINIÇÃO DAS OPÇÕES DE AUTENTICAÇÃO
-// Este objeto 'authOptions' será importado pelo 'route.ts'
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -154,18 +148,15 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: { signIn: "/login", },
-  // Adapter (se estiver usando e não for Firebase, remova esta seção se não for usar adaptador de banco de dados)
-  // adapter: FirestoreAdapter({ credential: firebaseCert }),
+
   secret: process.env.AUTH_SECRET,
   session: { strategy: "jwt", maxAge: 30 * 24 * 60 * 60, },
   debug: process.env.NODE_ENV === "development",
 };
 
-// 3. Exportar as funções `signIn` e `signOut` para uso em Client Components
 export { signIn, signOut } from "next-auth/react";
 
-// 4. Exportar a função `auth` para uso em Server Components
-// Ela usa `getServerSession` e `authOptions` para obter a sessão do lado do servidor.
+
 export async function auth() {
   return await getServerSession(authOptions);
 }
