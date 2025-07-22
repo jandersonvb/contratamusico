@@ -9,9 +9,10 @@ import { RadioGroup, RadioGroupItem } from "@/app/_components/ui/radio-group";
 import Link from "next/link";
 import { toast } from "sonner"; // Para feedback ao usuário
 import { useRouter } from "next/navigation"; // Para redirecionamento
-import { signupUserApi } from "@/app/api";
-import type { AccountType } from "@/app/lib/types/auth";
-import { useAuthStore } from "@/app/lib/stores/authStore";
+import { signIn } from "next-auth/react";
+import type { AccountType } from "@/app/lib/types/common/common";
+
+
 
 export function SignupForm() {
   const router = useRouter();
@@ -28,7 +29,6 @@ export function SignupForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const { setSession } = useAuthStore();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -51,7 +51,7 @@ export function SignupForm() {
       setFormData((prev) => ({ ...prev, accountType: value as AccountType }));
     } else {
       // Opcional: Lidar com um valor inválido, embora o RadioGroup já restrinja
-      console.warn("Tipo de conta inválido selecionado:", value);
+      toast.error("Tipo de conta inválido selecionado.");
     }
 
     if (errors.accountType) {
@@ -75,9 +75,9 @@ export function SignupForm() {
     }
     if (!formData.password) {
       newErrors.password = "Senha é obrigatória.";
-    } else if (formData.password.length < 6) {
+    } else if (formData.password.length < 8) {
       // Já estamos validando 6 no backend
-      newErrors.password = "A senha deve ter no mínimo 6 caracteres.";
+      newErrors.password = "A senha deve ter no mínimo 8 caracteres.";
     }
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "As senhas não coincidem.";
@@ -92,7 +92,6 @@ export function SignupForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     setIsLoading(true);
 
     if (!validateForm()) {
@@ -102,44 +101,67 @@ export function SignupForm() {
     }
 
     try {
-      const response = await signupUserApi({
-        fullName: formData.name, // 'name' do formulário para 'fullName' da API
+      // Ajustado: Use process.env.NEXT_PUBLIC_API_BACKEND_URL
+      const backendUrl = process.env.NEXT_PUBLIC_API_BACKEND_URL;
+
+
+      // 1. Chama o endpoint de cadastro do seu backend NestJS
+      const res = await fetch(`${backendUrl}/auth/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: formData.name,
+          email: formData.email,
+          password: formData.password,
+          accountType: formData.accountType,
+        }),
+      });
+
+      // Se a resposta do backend NÃO for OK (status 4xx ou 5xx), tenta ler o JSON de erro
+      if (!res.ok) {
+        // Tenta ler o corpo da resposta como JSON, mesmo em caso de erro
+        const errorData = await res.json();
+        const errorMessage = Array.isArray(errorData.message)
+          ? errorData.message.join(", ")
+          : errorData.message || errorData.error || "Erro desconhecido ao criar conta.";
+        throw new Error(errorMessage); // Lança o erro para o bloco catch
+      }
+
+      // *** SUCESSO NO CADASTRO NO BACKEND ***
+      // 2. Agora, faça o login usando NextAuth.js CredentialProvider
+      // Isso estabelece a sessão no navegador (cookies seguros).
+      const result = await signIn("credentials", {
         email: formData.email,
         password: formData.password,
-        accountType: formData.accountType, // Já é AccountType
+        redirect: false, // Não redireciona automaticamente; tratamos o redirecionamento aqui
       });
 
-      if (!response) {
-        toast.error("Erro ao criar conta. Tente novamente.");
-        setIsLoading(false);
-        return;
+      // Lida com o resultado do login do NextAuth.js
+      if (result?.error) {
+        toast.error(`Erro ao fazer login após cadastro: ${result.error}`);
+        console.error("Erro de login NextAuth após cadastro:", result.error);
+        // Opcional: Aqui você pode decidir o que fazer se o login falhar após o cadastro.
+        // Talvez redirecionar para /login com uma mensagem.
+        router.push("/login");
+      } else if (result?.ok) {
+        toast.success("Conta criada e login realizado com sucesso! Redirecionando...");
+        router.push("/dashboard"); // Redireciona para o dashboard
       }
-
-      // Sucesso no cadastro
-      setSession({
-        accessToken: response.accessToken,
-        user: {
-          id: response.user.id,
-          fullName: response.user.fullName,
-          email: response.user.email,
-          accountType: response.user.accountType,
-        },
-      });
-      toast.success("Conta criada com sucesso!");
-      router.push("/dashboard"); // Redireciona para o dashboard após o cadastro
-    } catch (error) {
-      console.error("Erro ao criar conta:", error);
+    } catch (error: unknown) {
+      // Captura erros gerais de rede ou exceções lançadas pelo `fetch` ou `signIn`
       if (error instanceof Error) {
-        // Se o erro for uma instância de Error, exibe a mensagem de erro
-        toast.error(error.message || "Erro ao criar conta. Tente novamente.");
+        toast.error(`Erro ao criar conta: ${error.message || "Tente novamente."}`);
+        console.error("Erro no signup:", error);
       } else {
-        // Se o erro não for uma instância de Error, exibe uma mensagem genérica
-        toast.error("Erro desconhecido ao criar conta. Tente novamente.");
+        toast.error("Erro desconhecido ao criar conta.");
+        console.error("Erro desconhecido no signup:", error);
       }
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Desativa o estado de loading no final
     }
   };
+
+
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">

@@ -261,13 +261,13 @@ interface HeaderNavLinkProps {
   onLinkClick?: () => void;
   className?: string;
   variant?:
-    | "default"
-    | "outline"
-    | "ghost"
-    | "link"
-    | "secondary"
-    | "destructive"
-    | null; // Null para links padrão
+  | "default"
+  | "outline"
+  | "ghost"
+  | "link"
+  | "secondary"
+  | "destructive"
+  | null; // Null para links padrão
 }
 
 function HeaderNavLink({
@@ -371,8 +371,12 @@ function UserProfileSection({
             className="relative h-9 w-9 overflow-hidden rounded-full"
           >
             <Avatar>
-              {session.user?.image && session.user.image.startsWith("http") ? (
-                <AvatarImage src={session.user.image} alt="Avatar do Usuário" />
+              {session.user?.image && // Verifica se a propriedade 'image' existe
+                typeof session.user.image === 'object' && // ADICIONADO: Verifica se é um OBJETO
+                (session.user.image as { url?: string }).url && // ADICIONADO: Verifica se tem a propriedade 'url'
+                typeof (session.user.image as { url: string }).url === 'string' && // ADICIONADO: Verifica se 'url' é string
+                (session.user.image as { url: string }).url.startsWith("http") ? ( // Agora, chama startsWith na URL
+                <AvatarImage src={(session.user.image as { url: string }).url} alt="Avatar do Usuário" /> // USA session.user.image.url
               ) : (
                 <AvatarFallback className="bg-gray-200 text-sm font-semibold text-gray-600">
                   {getInitials(session.user?.name, session.user?.email)}
@@ -422,6 +426,13 @@ export function Header({
   session: Session | null;
   userRole: UserRole;
 }) {
+
+  console.log("DEBUG Header: Session data:", session);
+  console.log("DEBUG Header: User data:", session?.user);
+  console.log("DEBUG Header: User Image:", session?.user?.image);
+  console.log("DEBUG Header: Type of User Image:", typeof session?.user?.image);
+  console.log("DEBUG Header: Image starts with http?", session?.user?.image && typeof session.user.image === 'string' ? session.user.image.startsWith("http") : "Not a string or missing");
+
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const handleSignOut = () => {
@@ -506,7 +517,7 @@ export function Header({
               onSignOut={handleSignOut}
             />
           ) : // Botões de login/cadastro para deslogados (Desktop, já tratados na nav)
-          null}
+            null}
 
           {/* Menu Hamburguer para Mobile (abre o Sheet) */}
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
@@ -555,18 +566,15 @@ export function Header({
                     {/* Informações do usuário logado no Sheet */}
                     <div className="bg-muted mb-4 flex items-center gap-3 rounded-md p-2">
                       <Avatar>
-                        {session.user?.image &&
-                        session.user.image.startsWith("http") ? (
-                          <AvatarImage
-                            src={session.user.image}
-                            alt="Avatar do Usuário"
-                          />
+                        {session.user?.image && // Verifica se a propriedade 'image' existe
+                          typeof session.user.image === 'object' && // ADICIONADO: Verifica se é um OBJETO
+                          (session.user.image as { url?: string }).url && // ADICIONADO: Verifica se tem a propriedade 'url'
+                          typeof (session.user.image as { url: string }).url === 'string' && // ADICIONADO: Verifica se 'url' é string
+                          (session.user.image as { url: string }).url.startsWith("http") ? ( // Agora, chama startsWith na URL
+                          <AvatarImage src={(session.user.image as { url: string }).url} alt="Avatar do Usuário" /> // USA session.user.image.url
                         ) : (
-                          <AvatarFallback className="bg-gray-200 text-base font-semibold text-gray-600">
-                            {getInitials(
-                              session.user?.name,
-                              session.user?.email,
-                            )}
+                          <AvatarFallback className="bg-gray-200 text-sm font-semibold text-gray-600">
+                            {getInitials(session.user?.name, session.user?.email)}
                           </AvatarFallback>
                         )}
                       </Avatar>

@@ -1,0 +1,1 @@
+export type AccountType = "musico" | "contratante"; // Definir o tipo AccountType

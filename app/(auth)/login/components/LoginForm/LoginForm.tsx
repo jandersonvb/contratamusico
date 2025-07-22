@@ -19,11 +19,14 @@ export function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     setIsLoading(true);
+
     setError(null);
 
     if (!email || !password) {
-      setError("E-mail e senha são obrigatórios.");
+      toast.error("E-mail e senha são obrigatórios.");
+      setError(null); // Remove a mensagem de erro abaixo dos inputs
       setIsLoading(false);
       return;
     }
@@ -97,7 +100,11 @@ export function LoginForm() {
 
       {error && <p className="text-destructive text-center text-sm">{error}</p>}
 
-      <Button type="submit" className="w-full" disabled={isLoading}>
+      <Button
+        type="submit"
+        className="w-full cursor-pointer"
+        disabled={isLoading}
+      >
         {isLoading ? "Entrando..." : "Entrar"}
       </Button>
 

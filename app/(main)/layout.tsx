@@ -2,11 +2,11 @@
 
 import { Toaster } from "sonner";
 
-import { SessionProvider } from "next-auth/react";
 import { Footer } from "../components/Footer/Footer";
 import { Header } from "../components/Header/Header";
 import { auth } from "../lib/auth";
 import { db } from "../lib/firebase";
+import NextAuthProvider from "../providers/NextAuthProvider";
 
 export const metadata = {
   title: "ContrataMúsico - Encontre o Músico Perfeito para Seu Evento",
@@ -73,12 +73,12 @@ export default async function MainLayout({
   }
 
   return (
-    <SessionProvider session={session}>
+    <NextAuthProvider session={session}>
       <Header session={session} userRole={userRole} />{" "}
       {/* Passa a sessão e a role para o Header */}
       {children}
       <Footer />
       <Toaster richColors position="bottom-right" /> {/* Configura o Toaster */}
-    </SessionProvider>
+    </NextAuthProvider>
   );
 }
