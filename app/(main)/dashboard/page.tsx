@@ -38,15 +38,6 @@ export default async function DashboardPage() {
     }
   }
 
-  // Opcional: Redirecionar para onboarding se o usuário não tiver uma role definida
-  // Isso é mais seguro fazer aqui do que no layout.tsx
-  if (!userRole) {
-    console.log(
-      "Usuário logado sem role, redirecionando para seleção de role/onboarding...",
-    );
-    redirect("/onboarding/select-role"); // Exemplo de rota de onboarding
-  }
-
   return (
     <div className="bg-background text-foreground container mx-auto min-h-[calc(100vh-var(--header-height)-var(--footer-height))] px-4 py-8 md:py-12">
       {" "}
