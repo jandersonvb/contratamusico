@@ -9,7 +9,7 @@ import { LoginForm } from "./components/LoginForm/LoginForm";
 import { SocialAuthButtons } from "./components/SocialAuthButtons/SocialAuthButtons";
 
 export default function LoginPage() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
